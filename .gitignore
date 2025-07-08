@@ -1,0 +1,6 @@
+.idx
+.venv
+.vscode
+__pycache__
+stockfish/stockfish-ubuntu-x86-64-avx2
+
