@@ -1,27 +1,32 @@
 # Detector Avanzado de Trampas en Ajedrez
 
-Este proyecto es una herramienta diseñada para analizar partidas de ajedrez en formato PGN y detectar patrones de juego que puedan sugerir el uso de asistencia externa (motores de ajedrez). Va más allá de las métricas simples, implementando análisis profundos inspirados en las técnicas utilizadas por plataformas líderes como Lichess.
+Este proyecto es una herramienta web para analizar partidas de ajedrez en formato PGN. Utiliza el potente motor **Stockfish** para realizar un análisis profundo jugada a jugada, calculando métricas avanzadas como la **Pérdida Promedio de Centipeones (ACPL)** y un **Porcentaje de Precisión** basado en el método de Lichess.
 
-El núcleo del proyecto es una potente herramienta de línea de comandos que utiliza el motor de ajedrez **Stockfish** para realizar un análisis detallado de cada jugada.
+El resultado es una interfaz de análisis rica e interactiva, inspirada en las herramientas de Lichess, que permite a los usuarios entender en profundidad el desarrollo de una partida.
 
-## Estado Actual
+## Estado del Proyecto
 
-El proyecto se encuentra en la **Fase 1**, con un núcleo de análisis funcional implementado.
+El proyecto ha completado la implementación de un **núcleo de análisis robusto** y un **frontend interactivo (MVP)**.
 
 Para un seguimiento detallado del progreso, puedes consultar:
 - **[Tareas Completadas (DONE.md)](docs/DONE.md)**
 - **[Tareas Pendientes (TODO.md)](docs/TODO.md)**
 
-## Características Implementadas (CLI)
+## Características Principales
 
-La herramienta de línea de comandos `src/analysis_core.py` actualmente puede:
+*   **Interfaz Web Completa:** Una aplicación Flask que presenta los resultados en un dashboard de dos columnas.
+*   **Análisis Profundo por Jugada:**
+    *   Cálculo del **ACPL**.
+    *   Cálculo de la **Precisión** basada en la conversión de centipeones a porcentaje de victoria.
+*   **Visualizaciones Interactivas:**
+    *   **Tablero de Ajedrez** con controles para navegar por toda la partida.
+    *   **Gráfica de Evaluación** que muestra la ventaja material jugada a jugada.
+    *   **Tabla de Análisis Detallada** con las métricas de cada movimiento, que al hacer clic, actualiza el tablero a esa posición.
 
-1.  **Analizar una partida desde un archivo PGN.**
-2.  **Calcular la Pérdida Promedio de Centipeones (ACPL)** para Blancas y Negras.
-3.  **Calcular el Porcentaje de Precisión** (al estilo Lichess) para ambos jugadores.
-4.  **Ajustar la profundidad del análisis** para un balance entre velocidad y precisión.
+### Captura de Pantalla
+![Screenshot de la aplicación](https://i.imgur.com/your-screenshot-url.png)  <!-- Reemplaza esto con la URL de tu captura cuando la subas -->
 
-## Cómo Usar la Herramienta CLI
+## Cómo Usar la Aplicación
 
 ### 1. Prerrequisitos
 
@@ -39,31 +44,24 @@ cd <nombre-del-repositorio>
 poetry install
 ```
 
-### 3. Ejecución
+### 3. Crear la Carpeta de Imágenes (Primer Uso)
+La aplicación necesita las imágenes de las piezas de ajedrez.
+1.  **Crea la estructura de carpetas:** `src/static/img/chesspieces/wikipedia/`
+2.  **Descarga las imágenes** desde el [repositorio de chessboard-js](https://github.com/oakmac/chessboardjs/raw/master/img/chesspieces/wikipedia.zip).
+3.  **Descomprime y copia** los archivos `.png` en la carpeta `wikipedia` que has creado.
 
-Para analizar una partida, utiliza el siguiente comando, especificando la ruta al archivo PGN y, opcionalmente, la profundidad del análisis.
+### 4. Ejecución del Servidor Web
+
+Ejecuta la aplicación Flask con el siguiente comando:
 
 ```bash
-poetry run python src/analysis_core.py --pgn_file ruta/a/tu/partida.pgn --depth 14
+poetry run flask --app src/main run
 ```
 
-- `--pgn_file`: **(Requerido)** La ruta al archivo PGN que quieres analizar.
-- `--depth`: **(Opcional)** La profundidad de búsqueda para Stockfish. Un valor más alto es más preciso pero más lento. El valor por defecto es `14`.
+La aplicación estará disponible en `http://127.0.0.1:5000`.
 
-### Ejemplo de Salida
-
-```
-Starting incremental PGN analysis with depth 14...
-Move 1 (g1f3) by White: ACPL=28
-Move 1 (g8f6) by Black: ACPL=5
-...
-Analysis complete.
-
---- Analysis Report ---
-White: ACPL = 22.49, Accuracy = 90.15%
-Black: ACPL = 31.20, Accuracy = 87.33%
-```
+Abre tu navegador, pega el PGN de una partida, selecciona la profundidad y haz clic en "Analyze Game".
 
 ## Próximos Pasos
 
-El siguiente gran objetivo es comenzar el desarrollo de la **Fase 4: Interfaz Web (MVP)** para hacer que la herramienta sea accesible a través de un navegador, o continuar refinando el análisis con métricas más avanzadas.
+Los siguientes grandes objetivos se centran en refinar aún más el análisis backend (implementando métricas como MultiPV) y continuar añadiendo funcionalidades a la interfaz, como la capacidad de subir archivos PGN.

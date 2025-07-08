@@ -1,11 +1,11 @@
 # TODO
 
-## Fase 1: Núcleo de Análisis (CLI) - Refinamientos
+## Fase 1: Núcleo de Análisis (CLI) - Refinamientos Avanzados
 
 - [ ] Implementar la métrica **Rango Promedio MultiPV**.
 - [ ] Implementar la métrica **Dificultad de la Jugada / Puntuación de Horizonte**.
 - [ ] Implementar la métrica **Consistencia de Errores (Desviación Estándar del ACPL)**.
-- [ ] Generar una salida de análisis más estructurada (ej. JSON) para facilitar su consumo por otros sistemas.
+- [ ] Generar una salida de análisis más estructurada (ej. JSON) para facilitar su consumo por otros sistemas (si se decide crear una API pública).
 
 ## Fase 2: Adquisición y Procesamiento de Datos
 
@@ -20,16 +20,9 @@
 - [ ] Evaluación y ajuste del modelo.
 - [ ] Guardar y cargar el modelo entrenado.
 
-## Fase 4: Interfaz Web (MVP)
+## Mejoras Futuras para la Interfaz Web
 
-- [ ] Estructura básica de una aplicación web con **Flask** o **FastAPI**.
-- [ ] Creación de un endpoint que acepte un PGN (texto o archivo).
-- [ ] Integración del núcleo de análisis para procesar las solicitudes desde la web.
-- [ ] Diseño de un frontend simple (HTML/CSS/JS) para pegar el PGN y mostrar los resultados.
-- [ ] Implementar un sistema de cola de tareas (ej. Celery) si el análisis es muy lento.
-
-## Fase 5: Reporte y Visualización de Resultados
-
-- [ ] Diseño de un formato de reporte claro y atractivo en la interfaz web.
-- [ ] Visualización del tablero de ajedrez, destacando jugadas clave.
-- [ ] Gráficos para mostrar la evolución de la evaluación y el ACPL a lo largo de la partida.
+- [ ] Permitir al usuario subir un archivo PGN además de pegar el texto.
+- [ ] Implementar un sistema de cola de tareas (ej. Celery) si el análisis a mayor profundidad resulta ser muy lento para una respuesta HTTP directa.
+- [ ] Mejorar la visualización destacando las jugadas "brillantes" o los "errores graves" en el tablero o la tabla.
+- [ ] Añadir información del encabezado del PGN (nombres de los jugadores, resultado, etc.) al informe.
