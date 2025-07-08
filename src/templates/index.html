@@ -3,99 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Cheat Detector</title>
-    <!-- ChessboardJS and Chess.js -->
-    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
-        integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"
-        integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-        integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
-        crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
-        integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
-        crossorigin="anonymous"></script>
-    <!-- Chart.js -->
+    <title>Advanced Chess Analysis</title>
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js" integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 20px auto; padding: 0 15px; background-color: #f8f9fa; }
+        :root {
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --text-color: #212529;
+            --primary-blue: #007bff;
+            --hover-blue: #0056b3;
+            --white: #ffffff;
+            --shadow-color: rgba(0,0,0,0.05);
+            --border-color: #dee2e6;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--light-gray);
+            margin: 0;
+            padding: 20px;
+        }
+        .page-container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px; }
+        .left-panel { flex: 2; min-width: 450px; }
+        .right-panel { flex: 1; min-width: 300px; }
+        
+        .widget {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            margin-bottom: 20px;
+        }
         h1, h2 { color: #2c3e50; text-align: center; }
-        .main-content { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px; }
-        .analysis-section { flex: 1; min-width: 350px; }
-        .board-section { flex: 1; min-width: 350px; }
-        form { background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        textarea { width: 95%; height: 150px; padding: 10px; border: 1px solid #dcdcdc; border-radius: 4px; font-size: 14px; margin-bottom: 10px; }
+        h1 { width: 100%; margin-bottom: 20px; }
+        
+        /* Form Styles Restored */
+        textarea { width: 95%; height: 120px; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 14px; margin-bottom: 10px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="number"], input[type="submit"] { padding: 10px 15px; border-radius: 4px; border: 1px solid transparent; font-size: 16px; cursor: pointer; }
-        input[type="submit"] { background-color: #3498db; color: white; transition: background-color 0.3s; width: 100%; }
+        input[type="number"] { width: 60px; padding: 10px; border-radius: 4px; border: 1px solid var(--border-color); }
+        input[type="submit"] { background-color: var(--primary-blue); color: white; transition: background-color 0.3s; width: 100%; padding: 12px 15px; border-radius: 4px; border: none; font-size: 16px; cursor: pointer; }
+        input[type="submit"]:hover { background-color: var(--hover-blue); }
         input[type="submit"]:disabled { background-color: #a0a0a0; cursor: not-allowed; }
-        .report, #board-container, #moves-table-container { margin-top: 20px; padding: 20px; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: none; }
-        .result-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+        
+        /* Board and Controls */
+        #board { width: 100%; }
+        .controls { text-align: center; }
+        .controls button { font-size: 18px; padding: 5px 12px; margin: 0 5px; }
+
+        /* Report and Table */
+        .result-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--medium-gray); }
         .result-item:last-child { border-bottom: none; }
+        #moves-table-container { height: 350px; overflow-y: auto; padding-top: 0; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--medium-gray); }
+        th { background-color: var(--light-gray); position: sticky; top: 0; }
+        tbody tr { cursor: pointer; }
+        tbody tr:hover { background-color: var(--medium-gray); }
+        tr.active-move { background-color: #dcf1ff; font-weight: bold; }
+        
+        /* Elements to hide initially */
+        #chart-container, #results-container, #moves-table-container, .controls {
+            display: none;
+        }
+
         .loader { text-align: center; padding: 20px; font-size: 18px; display: none; }
         .error { color: #c0392b; font-weight: bold; text-align: center; margin-top: 15px; }
-        #board { width: 100%; max-width: 400px; margin: 0 auto; }
-        .controls { text-align: center; margin-top: 10px; }
-        .controls button { font-size: 18px; padding: 5px 12px; margin: 0 5px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
-        th { background-color: #f2f2f2; }
-        tbody tr { cursor: pointer; }
-        tbody tr:hover { background-color: #f5f5f5; }
-        tr.active-move { background-color: #dcf1ff; font-weight: bold; }
-        td.move-number { text-align: center; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1>Advanced Chess Analysis</h1>
-    
-    <div class="main-content">
-        <div class="analysis-section">
-            <form id="analysis-form">
-                <label for="pgn">PGN Data:</label>
-                <textarea id="pgn" name="pgn" required placeholder="[Event "My Game"]..."></textarea>
-                <label for="depth">Analysis Depth (10-20):</label>
-                <input type="number" id="depth" name="depth" min="10" max="20" value="14">
-                <input type="submit" value="Analyze Game">
-            </form>
-             <div id="loader" class="loader">Analyzing... This may take a moment.</div>
-             <div id="error-container" class="error"></div>
+    <div class="page-container">
+        <h1>Advanced Chess Analysis</h1>
+
+        <div class="left-panel">
+            <div id="board-container" class="widget">
+                <div id="board"></div>
+            </div>
+            <div id="chart-container" class="widget">
+                <canvas id="eval-chart"></canvas>
+            </div>
         </div>
 
-        <div class="board-section">
-            <div id="board-container">
-                <h2>Game Replay</h2>
-                <div id="board"></div>
-                <div class="controls">
+        <div class="right-panel">
+            <div id="form-container" class="widget">
+                <form id="analysis-form">
+                    <label for="pgn">PGN Data:</label>
+                    <textarea id="pgn" name="pgn" required placeholder="[Event "My Game"]..."></textarea>
+                    <label for="depth">Analysis Depth (10-20):</label>
+                    <input type="number" id="depth" name="depth" min="10" max="20" value="14">
+                    <input type="submit" value="Analyze Game">
+                </form>
+                <div id="loader" class="loader">Analyzing...</div>
+                <div id="error-container" class="error"></div>
+            </div>
+
+            <div id="moves-table-container" class="widget">
+                <table id="moves-table">
+                    <thead><tr><th>#</th><th>Move</th><th>ACPL</th><th>Accuracy</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="controls widget">
+                <span id="move-status" style="font-weight: bold;"></span>
+                <div>
                     <button id="start-btn">«</button>
                     <button id="prev-btn">‹</button>
                     <button id="next-btn">›</button>
                     <button id="end-btn">»</button>
                 </div>
-                <div id="move-status" style="text-align: center; margin-top: 5px; font-weight: bold;"></div>
+            </div>
+
+            <div id="results-container" class="widget report">
+                <h2>Analysis Report</h2>
+                <div class="result-item"><span><strong>White's Accuracy:</strong></span><span id="white-accuracy"></span></div>
+                <div class="result-item"><span>White's Average Centipawn Loss:</span><span id="white-acpl"></span></div>
+                <div class="result-item"><span><strong>Black's Accuracy:</strong></span><span id="black-accuracy"></span></div>
+                <div class="result-item"><span>Black's Average Centipawn Loss:</span><span id="black-acpl"></span></div>
             </div>
         </div>
-    </div>
-    
-    <div id="results-container" class="report">
-        <h2>Analysis Report</h2>
-        <div class="result-item"><span><strong>White's Accuracy:</strong></span><span id="white-accuracy"></span></div>
-        <div class="result-item"><span>White's Average Centipawn Loss:</span><span id="white-acpl"></span></div>
-        <div class="result-item"><span><strong>Black's Accuracy:</strong></span><span id="black-accuracy"></span></div>
-        <div class="result-item"><span>Black's Average Centipawn Loss:</span><span id="black-acpl"></span></div>
-        <canvas id="eval-chart"></canvas>
-    </div>
-
-    <div id="moves-table-container">
-        <h2>Move by Move Analysis</h2>
-        <table id="moves-table">
-            <thead>
-                <tr><th>#</th><th>Move</th><th>ACPL</th><th>Accuracy</th></tr>
-            </thead>
-            <tbody></tbody>
-        </table>
     </div>
 
     <script>
@@ -105,6 +136,13 @@
             let currentMove = 0;
             let evalChart = null;
 
+            // Initialize the board on page load
+            board = Chessboard('board', {
+                position: 'start',
+                draggable: false,
+                pieceTheme: '/static/img/chesspieces/wikipedia/{piece}.png'
+            });
+
             function updateBoard() {
                 if (!moveHistory || moveHistory.length === 0) return;
                 const moveData = moveHistory[currentMove];
@@ -113,8 +151,14 @@
                 $('#move-status').text(moveText);
                 
                 $('#moves-table tbody tr').removeClass('active-move');
-                if (currentMove > 0) {
-                    $('#moves-table tbody tr').eq(currentMove - 1).addClass('active-move');
+                const tableRow = $('#moves-table tbody tr').eq(currentMove - 1);
+                if (tableRow.length) {
+                    tableRow.addClass('active-move');
+                    // Scroll the table to keep the active move in view
+                    const tableContainer = $('#moves-table-container');
+                    const rowTop = tableRow.position().top;
+                    const containerHeight = tableContainer.height();
+                    tableContainer.scrollTop(tableContainer.scrollTop() + rowTop - (containerHeight / 2));
                 }
             }
 
@@ -124,7 +168,7 @@
             $('#end-btn').on('click', function() { currentMove = moveHistory.length - 1; updateBoard(); });
             
             $('#moves-table tbody').on('click', 'tr', function() {
-                currentMove = $(this).index() + 1;
+                currentMove = $(this).data('ply');
                 updateBoard();
             });
 
@@ -159,7 +203,7 @@
                 tableBody.empty();
                 let html = '';
                 movesData.forEach((move, index) => {
-                    html += `<tr data-ply="${index + 1}">`; // Add data-ply attribute
+                    html += `<tr data-ply="${index + 1}">`;
                     if (move.turn === 'White') {
                         html += `<td class="move-number">${move.move_number}.</td><td>${move.san}</td>`;
                     } else {
@@ -172,7 +216,7 @@
             }
 
             $('#analysis-form').on('submit', function(event) {
-                event.preventDefault(); // This is the crucial line
+                event.preventDefault();
                 const form = this;
                 const pgn = $(form).find('#pgn').val();
                 const depth = $(form).find('#depth').val();
@@ -180,14 +224,17 @@
                 const submitButton = $(form).find('input[type="submit"]');
                 const loader = $('#loader');
                 const resultsContainer = $('#results-container');
-                const boardContainer = $('#board-container');
+                const chartContainer = $('#chart-container');
+                const controlsWidget = $('.controls.widget');
                 const movesTableContainer = $('#moves-table-container');
                 const errorContainer = $('#error-container');
 
+                // Reset UI state
                 submitButton.prop('disabled', true).val('Analyzing...');
                 loader.show();
-                [resultsContainer, boardContainer, movesTableContainer].forEach(c => c.hide());
+                [resultsContainer, chartContainer, movesTableContainer, controlsWidget].forEach(c => c.hide());
                 errorContainer.text('');
+                moveHistory = []; // Reset history for the new game
 
                 $.ajax({
                     url: '/analyze',
@@ -201,7 +248,7 @@
                         $('#black-accuracy').text(data.black_accuracy + '%');
                         $('#black-acpl').text(data.black_acpl);
                         
-                        [resultsContainer, boardContainer, movesTableContainer].forEach(c => c.show());
+                        [resultsContainer, chartContainer, movesTableContainer, controlsWidget].forEach(c => c.show());
                         
                         populateMovesTable(data.moves_data);
                         renderChart(data.evaluations);
@@ -217,12 +264,6 @@
                             moveHistory.push({ san: move, fen: gameSimulator.fen() });
                         });
                         
-                        if (board) board.destroy();
-                        board = Chessboard('board', {
-                            position: 'start',
-                            draggable: false,
-                            pieceTheme: '/static/img/chesspieces/wikipedia/{piece}.png'
-                        });
                         currentMove = 0;
                         updateBoard();
                     },
@@ -238,6 +279,5 @@
             });
         });
     </script>
-
 </body>
 </html>
