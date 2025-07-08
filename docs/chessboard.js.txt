@@ -1,0 +1,600 @@
+chessboardjs.com
+
+Documentation
+
+    Config Properties
+    Methods
+    Position Object
+    FEN String
+    Errors
+
+Config Properties
+Property / Type 	Default 	Description 	Example
+
+draggable
+
+Boolean
+	
+
+false
+	
+
+If true, pieces on the board are draggable to other squares.
+	
+
+Draggable Snapback
+
+dropOffBoard
+
+'snapback' or
+'trash'
+	
+
+'snapback'
+	
+
+If 'snapback', pieces dropped off the board will return to their original square.
+
+If 'trash', pieces dropped off the board will be removed from the board.
+
+This property has no effect when draggable is false.
+	
+
+Draggable Snapback
+
+Draggable Trash
+
+position
+
+'start' or
+FEN String or
+Position Object
+	
+
+n/a
+	
+
+If provided, sets the initial position of the board.
+	
+
+Start Position
+
+Position FEN
+
+Position Object
+
+onChange
+
+Function
+	
+
+n/a
+	
+
+Fires when the board position changes.
+
+The first argument to the function is the old position, the second argument is the new position.
+
+Warning: do not call any position-changing methods in your onChange function or you will cause an infinite loop.
+
+Position-changing methods are: clear(), move(), position(), and start().
+	
+
+onChange
+
+onDragStart
+
+Function
+	
+
+n/a
+	
+
+Fires when a piece is picked up.
+
+The first argument to the function is the source of the piece, the second argument is the piece, the third argument is the current position on the board, and the fourth argument is the current orientation.
+
+The drag action is prevented if the function returns false.
+	
+
+onDragStart
+
+onDragStart Prevent Drag
+
+onDragMove
+
+Function
+	
+
+n/a
+	
+
+Fires when a dragged piece changes location.
+
+The first argument to the function is the new location of the piece, the second argument is the old location of the piece, the third argument is the source of the dragged piece, the fourth argument is the piece, the fifth argument is the current position on the board, and the sixth argument is the current orientation.
+	
+
+onDragMove
+
+onDrop
+
+Function
+	
+
+n/a
+	
+
+Fires when a piece is dropped.
+
+The first argument to the function is the source of the dragged piece, the second argument is the target of the dragged piece, the third argument is the piece, the fourth argument is the new position once the piece drops, the fifth argument is the old position before the piece was picked up, and the sixth argument is the current orientation.
+
+If 'snapback' is returned from the function, the piece will return to it's source square.
+
+If 'trash' is returned from the function, the piece will be removed.
+	
+
+onDrop
+
+onDrop Snapback
+
+onDrop Trash
+
+onMouseoutSquare
+
+Function
+	
+
+n/a
+	
+
+Fires when the mouse leaves a square.
+
+The first argument to the function is the square that was left, the second argument is the piece on that square (or false if there is no piece), the third argument is the current position of the board, and the fourth argument is the current orientation.
+
+Note that onMouseoutSquare will not fire during piece drag and drop. Use onDragMove.
+	
+
+Highlight Legal Moves
+
+onMouseoverSquare
+
+Function
+	
+
+n/a
+	
+
+Fires when the mouse enters a square.
+
+The first argument to the function is the square that was entered, the second argument is the piece on that square (or false if there is no piece), the third argument is the current position of the board, and the fourth argument is the current orientation.
+
+Note that onMouseoverSquare will not fire during piece drag and drop. Use onDragMove.
+	
+
+Highlight Legal Moves
+
+onMoveEnd
+
+Function
+	
+
+n/a
+	
+
+Fires at the end of animations when the board position changes.
+
+The first argument to the function is the old position, the second argument is the new position.
+	
+
+onMoveEnd
+
+onSnapbackEnd
+
+Function
+	
+
+n/a
+	
+
+Fires when the "snapback" animation is complete when pieces are dropped off the board.
+
+The first argument to the function is the dragged piece, the second argument is the square the piece returned to, the third argument is the current position, and the fourth argument is the current orientation.
+	
+
+onSnapbackEnd
+
+onSnapEnd
+
+Function
+	
+
+n/a
+	
+
+Fires when the piece "snap" animation is complete.
+
+The first argument to the function is the source of the dragged piece, the second argument is the target of the dragged piece, and the third argument is the piece.
+	
+
+Only Allow Legal Moves
+
+orientation
+
+'white' or
+'black'
+	
+
+'white'
+	
+
+If provided, sets the initial orientation of the board.
+	
+
+Orientation
+
+showNotation
+
+Boolean
+	
+
+true
+	
+
+Turn board notation on or off.
+	
+
+Notation
+
+sparePieces
+
+Boolean
+	
+
+false
+	
+
+If true, the board will have spare pieces that can be dropped onto the board.
+
+If sparePieces is set to true, draggable gets set to true as well.
+	
+
+Spare Pieces
+
+showErrors
+
+false or
+String or
+Function
+	
+
+n/a
+	
+
+showErrors is an optional parameter to control how Chessboard reports errors.
+
+Every error in Chessboard has a unique code to help diagnose problems and search for solutions.
+
+If showErrors is false then errors will be ignored.
+
+If showErrors is 'console' then errors will be sent to console.log().
+
+If showErrors is 'alert' then errors will be sent to window.alert().
+
+If showErrors is a function then the first argument is the unique error code, the second argument is an error string, and an optional third argument is a data structure that is relevant to the error.
+	
+
+pieceTheme
+
+String or
+Function
+	
+
+'img/chesspieces/
+wikipedia/{piece}.png'
+	
+
+A template string used to determine the source of piece images.
+
+If pieceTheme is a function the first argument is the piece code.
+
+The function should return an <img> source.
+	
+
+Piece Theme String
+
+Piece Theme Function
+
+appearSpeed
+
+Number or
+'slow' or
+'fast'
+	
+
+200
+	
+
+Animation speed for when pieces appear on a square.
+
+Note that the "appear" animation only occurs when sparePieces is false.
+	
+
+moveSpeed
+
+Number or
+'slow' or
+'fast'
+	
+
+200
+	
+
+Animation speed for when pieces move between squares or from spare pieces to the board.
+	
+
+Animation Speed
+
+snapbackSpeed
+
+Number or
+'slow' or
+'fast'
+	
+
+50
+	
+
+Animation speed for when pieces that were dropped outside the board return to their original square.
+	
+
+Animation Speed
+
+snapSpeed
+
+Number or
+'slow' or
+'fast'
+	
+
+25
+	
+
+Animation speed for when pieces "snap" to a square when dropped.
+	
+
+Animation Speed
+
+trashSpeed
+
+Number or
+'slow' or
+'fast'
+	
+
+100
+	
+
+Animation speed for when pieces are removed.
+	
+
+Animation Speed
+Methods
+Method 	Arguments 	Description 	Example
+
+clear(useAnimation)
+	
+
+false (optional)
+	
+
+Removes all the pieces on the board.
+
+If useAnimation is false, removes pieces instantly.
+
+Alias of position({}) and position({}, false)
+	
+
+Clear Board
+
+destroy()
+	none	
+
+Remove the widget from the DOM.
+	
+
+Destroy Board
+
+fen()
+	none	
+
+Returns the current position as a FEN string.
+
+Alias of position('fen')
+	
+
+Get Position
+
+flip()
+	none	
+
+Flips the board orientation.
+
+Alias of orientation('flip')
+	
+
+Orientation
+
+move(move1, move2, etc)
+	
+
+'e2-e4', 'g8-f6', etc
+	
+
+Executes one or more moves on the board.
+
+Returns an updated Position Object of the board including the move(s).
+	
+
+Move Pieces
+
+position(fen)
+	
+
+'fen' (optional)
+	
+
+Returns the current position as a Position Object.
+
+If the first argument is 'fen', returns the position as a FEN string.
+	
+
+Get Position
+
+position(newPosition, useAnimation)
+	
+
+Position Object, FEN string, or 'start'
+
+false (optional)
+	
+
+Animates to a new position.
+
+If useAnimation is false, sets the position instantly.
+	
+
+Set Position
+
+orientation()
+	none	
+
+Returns the current orientation of the board.
+	
+
+Orientation
+
+orientation(side)
+	
+
+'white', 'black', or 'flip'
+	
+
+If 'white' or 'black', sets the orientation of the board accordingly.
+
+If 'flip', flips the orientation.
+	
+
+Orientation
+
+resize()
+	none	
+
+Recalculates board and square sizes based on the parent element and redraws the board accordingly.
+	
+
+Resize
+
+start(useAnimation)
+	
+
+false (optional)
+	
+
+Sets the board to the start position.
+
+If useAnimation is false, sets the position instantly.
+
+Alias of position('start') and position('start', false)
+	
+
+Set Position
+Position Object
+
+You can use a JavaScript object to represent a board position.
+
+The object property names must be algebraic squares (ie: e4, b2, c6, etc) and the values must be a valid piece codes (ie: wP, bK, wQ, etc).
+
+See an example of using an object to represent a position here.
+
+Chessboard.js exposes the Chessboard.objToFen method to help convert between Position Objects and FEN Strings.
+FEN String
+
+You can use Forsyth-Edwards Notation (FEN) to represent a board position.
+
+Note that FEN notation captures more information than chessboard.js requires, like who's move it is and whether or not castling is allowed. This information will be ignored; only the position information is used.
+
+See an example of using a FEN String to represent a position here and here.
+
+Chessboard.js exposes the Chessboard.fenToObj method to help convert a FEN String to a Position Object.
+Errors
+
+Chessboard.js has an error system designed to inform you when you use the API incorrectly.
+
+Every alert has a unique code associated with it and you can control how the errors are presented with the showErrors config option.
+Error ID 	Error Text 	More Information
+
+1001
+	
+
+The first argument to Chessboard() cannot be an empty string.
+	
+
+The first argument to the Chessboard() constructor should be the id of a DOM element or a reference to a single DOM element.
+
+1003
+	
+
+The first argument to Chessboard() must be an ID or a single DOM node.
+	
+
+The first argument to the Chessboard() constructor should be the id of a DOM element or a reference to a single DOM element.
+
+1005
+	
+
+Unable to find a valid version of jQuery. Please include jQuery 1.8.3 or higher on the page.
+	
+
+Chessboard requires jQuery version 1.8.3 or higher.
+
+2826
+	
+
+Invalid move passed to the move method.
+	
+
+Moves must be a string in the form of 'e2-e4', 'b8-c6', etc.
+
+5482
+	
+
+Invalid value passed to the orientation method.
+	
+
+The first argument to the orientation method must be 'white', 'black', or 'flip'.
+
+6482
+	
+
+Invalid value passed to the position method.
+	
+
+Position must be either 'start', a valid FEN String, or a valid Position Object.
+
+7263
+	
+
+Invalid value passed to config.position
+	
+
+Position must either be 'start', a valid FEN String, or a Position Object.
+
+8272
+	
+
+Unable to build image source for cfg.pieceTheme.
+	
+
+This is an internal Chessboard error that you should never see.
+
+If you see this error please open a GitHub issue.
