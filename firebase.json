@@ -1,0 +1,18 @@
+{
+  "apphosting": {
+    "backendId": "chess-cheating-backend",
+    "runConfig": {
+      "runtime": "python"
+    },
+    "build": {
+      "commands": [
+        "chmod +x stockfish/stockfish-ubuntu-x86-64-avx2"
+      ]
+    },
+    "ignore": [
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log"
+    ]
+  }
+}
