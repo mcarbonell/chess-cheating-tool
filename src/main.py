@@ -1,6 +1,6 @@
 # src/main.py
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import asyncio
 import os
 import traceback
@@ -15,6 +15,11 @@ app = Flask(__name__, template_folder='templates')
 
 # --- Configuration ---
 STOCKFISH_PATH = "stockfish/stockfish-ubuntu-x86-64-avx2"
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/')
 def index():
